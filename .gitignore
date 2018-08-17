@@ -1,0 +1,10 @@
+# Prerequisites
+*.d
+
+# Object Files
+*.o
+*.obj
+
+# Vim temporary files
+*.swp
+*.swo
