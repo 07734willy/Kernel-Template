@@ -4,7 +4,14 @@
 # Object Files
 *.o
 *.obj
+*.elf
+
+# Disk Images
+*.iso
 
 # Vim temporary files
 *.swp
 *.swo
+
+# VScode
+.vscode/*
