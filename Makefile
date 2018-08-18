@@ -8,12 +8,13 @@ LDFLAGS = -T link.ld -melf_i386
 AS = nasm
 ASFLAGS = -f elf
 
-COBJS := $(patsubst %.c, %.o, $(wildcard $(ANYDIR)/*.c))
-SOBJS := $(patsubst %.S, %.o, $(wildcard $(ANYDIR)/*.S))
+COBJS := $(patsubst %.c, %.o, $(shell find . -name "*.c"))
+SOBJS := $(patsubst %.S, %.o, $(shell find . -name "*.S"))
 all: kernel.elf
 
 # to remove all object files: rm -rf $(ANYDIR)/*.o
 kernel.elf: $(SOBJS) $(COBJS)
+	@echo $(SOBJS)
 	ld $(LDFLAGS) $(join $(dir $(SOBJS)), $(addprefix object/, $(notdir $(SOBJS)))) $(join $(dir $(COBJS)), $(addprefix object/, $(notdir $(COBJS)))) -o $(TOPDIR)/iso/boot/kernel.elf
 
 # may need to specify: --xorriso=xorriso
