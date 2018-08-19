@@ -9,7 +9,7 @@
 #define FB_HIGH_BYTE_COMMAND    14
 #define FB_LOW_BYTE_COMMAND     15
 
-#define FB_ADDRESS 0x000B8000
+#define FB_ADDRESS 0xB8000
 #define FB_COLUMNS 80
 #define FB_ROWS    25
 
@@ -137,7 +137,7 @@ void fb_write_color(const char* s, fb_color color)
  */
 fb_color fb_make_color(int background, int foreground, int blink)
 {
-    return (foreground & 15) + ((background & 7) << 4) + ((blink & 1) << 7);
+    return (foreground & 0xF) | ((background & 0x7) << 0x4) | ((blink & 0x1) << 0x7);
 }
 
 /** fb_set_background_color
@@ -147,7 +147,7 @@ fb_color fb_make_color(int background, int foreground, int blink)
  */
 void fb_set_background_color(int color)
 {
-    default_color = (default_color & 15) + ((color & 7) << 4) + (default_color & 128);
+    default_color = (default_color & 0xF) | ((color & 0x7) << 0x4) | (default_color & 0x80);
 }
 
 /** fb_set_foreground_color
@@ -157,7 +157,7 @@ void fb_set_background_color(int color)
  */
 void fb_set_foreground_color(int color)
 {
-    default_color = (color & 15) + (default_color & 240);
+    default_color = (color & 0xFF) | (default_color & 0xF0);
 }
 
 /** fb_set_blink:
@@ -167,7 +167,7 @@ void fb_set_foreground_color(int color)
  */
 void fb_set_blink(int blink)
 {
-    default_color = (blink << 7) + (default_color & 127);
+    default_color = (blink << 0x7) | (default_color & 0x7F);
 }
 
 /** fb_write
