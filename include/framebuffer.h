@@ -50,6 +50,20 @@ void fb_write_cell_color(unsigned int i, char c, fb_color color);
  */
 void fb_write_cell(unsigned int i, char c);
 
+/** fb_write_char:
+ *  Writes a single character to the framebuffer. It will
+ *  move the cursor and scroll if necessary.
+ * 
+ * @param c The character
+ */
+void fb_write_char(char c);
+
+/** fb_scroll:
+ *  Scroll the framebuffer down one row. Does not move the
+ *  cursor.
+ */
+void fb_scroll();
+
 /** fb_write_color
  * Writes a null-terminated string in the framebuffer using
  * the specified color schema.
