@@ -59,8 +59,8 @@ void fb_write_cell(unsigned int i, char c);
 void fb_write_char(char c);
 
 /** fb_scroll:
- *  Scroll the framebuffer down one row. Does not move the
- *  cursor.
+ *  Scrolls the framebuffer down one row. Does not move the
+ *  cursor. Also clears the last row.
  */
 void fb_scroll();
 
@@ -98,7 +98,7 @@ void fb_set_background_color(int color);
  */
 void fb_set_foreground_color(int color);
 
-/** fb_set_foreground_color
+/** fb_set_blink:
  * Sets the default blink bit
  * 
  * @param color The value of the blink bit
@@ -113,5 +113,10 @@ void fb_set_blink(int blink);
  * @param s The null-terminated string
  */
 void fb_write(const char* s);
+
+/** fb_clear
+ *  Clears the framebuffer and moves the cursor to (0,0)
+ */
+void fb_clear();
 
 #endif
