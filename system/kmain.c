@@ -1,10 +1,11 @@
 #include "framebuffer.h"
 
 void kmain() {
-    // just for debug
-    // kmain() should use fb_write() instead
-    fb_write_cell(0, 'T', FB_WHITE, FB_LIGHT_GREEN, FB_NOBLINK);
-    fb_write_cell(1, 'E', FB_LIGHT_BLUE, FB_CYAN, FB_NOBLINK);
-    fb_write_cell(2, 'S', FB_DARK_GREY, FB_LIGHT_RED, FB_NOBLINK);
-    fb_write_cell(3, 'T', FB_RED, FB_LIGHT_GREEN, FB_BLINK);
+    fb_write_cell(80, 'T');
+    fb_set_background_color(FB_LIGHT_BLUE);
+    fb_write_cell(81, 'T');
+    fb_set_foreground_color(FB_BROWN);
+    fb_write_cell(82, 'T');
+    fb_set_blink(FB_BLINK);
+    fb_write_cell(83, 'T');
 }

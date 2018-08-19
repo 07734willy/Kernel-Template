@@ -22,6 +22,8 @@
 #define FB_NOBLINK       0
 #define FB_BLINK         1
 
+typedef unsigned char fb_color;
+
 /** fb_move_cursor:
  *  Moves the cursor of the framebuffer to the given position
  *
@@ -30,19 +32,69 @@
 void fb_move_cursor(unsigned short pos);
 
 /** fb_write_cell:
- *  Writes a character with the given foreground and background to position i
+ *  Writes a character with the given color schema to position i
  *  in the framebuffer.
  *
  *  @param i  The location in the framebuffer
  *  @param c  The character
- *  @param fg The foreground color
- *  @param bg The background color
+ *  @param color The color schema, generated with fb_make_color()
  */
-void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg, unsigned char blink);
+void fb_write_cell_color(unsigned int i, char c, fb_color color);
 
-/** write
+/** fb_write_cell:
+ *  Writes a character with the default color schema to position i
+ *  in the framebuffer.
+ *
+ *  @param i  The location in the framebuffer
+ *  @param c  The character
+ */
+void fb_write_cell(unsigned int i, char c);
+
+/** fb_write_color
+ * Writes a null-terminated string in the framebuffer using
+ * the specified color schema.
+ * It will automatically advance the cursor and
+ * scroll the screen if necessary.
+ * 
+ * @param s The null-terminated string
+ * @param color The color schema generated with fb_make_color()
+ */
+void fb_write_color(const char* s, fb_color color);
+
+/** fb_make_color
+ * Generates a color schema
+ * 
+ * @param background The background color
+ * @param foreground The foreground color
+ * @param blink Value of the blink bit
+ */
+fb_color fb_make_color(int background, int foreground, int blink);
+
+/** fb_set_background_color
+ * Sets the default background
+ * 
+ * @param color The background color
+ */
+void fb_set_background_color(int color);
+
+/** fb_set_foreground_color
+ * Sets the default foreground
+ * 
+ * @param color The foreground color
+ */
+void fb_set_foreground_color(int color);
+
+/** fb_set_foreground_color
+ * Sets the default blink bit
+ * 
+ * @param color The value of the blink bit
+ */
+void fb_set_blink(int blink);
+
+/** fb_write
  * Writes a null-terminated string in the framebuffer. It will
- * automatically advance the cursor and scroll the screen in necessary.
+ * automatically advance the cursor and scroll the
+ * screen if necessary. Uses the default color schema.
  * 
  * @param s The null-terminated string
  */
