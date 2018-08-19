@@ -137,7 +137,7 @@ void fb_write_color(const char* s, fb_color color)
  */
 fb_color fb_make_color(int background, int foreground, int blink)
 {
-    return (foreground & 0xF) | ((background & 0x7) << 0x4) | ((blink & 0x1) << 0x7);
+    return (foreground & 0xF) | ((background & 0x7) << 0x4) | (!!blink << 0x7);
 }
 
 /** fb_set_background_color
