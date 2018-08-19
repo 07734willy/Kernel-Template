@@ -14,12 +14,11 @@ all: kernel.elf
 
 # to remove all object files: rm -rf $(ANYDIR)/*.o
 kernel.elf: $(SOBJS) $(COBJS)
-	@echo $(SOBJS)
 	ld $(LDFLAGS) $(join $(dir $(SOBJS)), $(addprefix object/, $(notdir $(SOBJS)))) $(join $(dir $(COBJS)), $(addprefix object/, $(notdir $(COBJS)))) -o $(TOPDIR)/iso/boot/kernel.elf
 
 # may need to specify: --xorriso=xorriso
 os.iso: kernel.elf
-	grub-mkrescue -o $(TOPDIR)/os.iso $(TOPDIR)/iso 
+	grub-mkrescue -d /usr/lib/grub/i386-pc -o $(TOPDIR)/os.iso $(TOPDIR)/iso 
 
 run: os.iso
 	bochs -f $(TOPDIR)/bochsrc.txt -q

@@ -19,6 +19,9 @@
 #define FB_LIGHT_BROWN   14
 #define FB_WHITE         15
 
+#define FB_NOBLINK       0
+#define FB_BLINK         1
+
 /** fb_move_cursor:
  *  Moves the cursor of the framebuffer to the given position
  *
@@ -35,7 +38,7 @@ void fb_move_cursor(unsigned short pos);
  *  @param fg The foreground color
  *  @param bg The background color
  */
-void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg);
+void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg, unsigned char blink);
 
 /** write
  * Writes a null-terminated string in the framebuffer. It will

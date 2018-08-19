@@ -32,11 +32,10 @@ void fb_move_cursor(unsigned short pos)
  *  @param fg The foreground color
  *  @param bg The background color
  */
-void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg)
-{
+void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg, unsigned char blink) {
     char* fb = (char*)FB_ADDRESS;
-    fb[i] = c;
-    fb[i + 1] = ((fg & 0x0F) << 4) | (bg & 0x0F);
+    fb[2 * i] = c;
+    fb[2 * i + 1] = (fg & 0xF) | ((bg & 7) << 4) | (!!blink << 7);
 }
 
 /** write
