@@ -2,7 +2,6 @@ TOPDIR := .
 INCDIR := $(TOPDIR)/include
 RUNDIR := $(TOPDIR)/runtime
 CC = gcc
-
 # For use in compiling C source for the kernel.elf
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 		 -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -I$(INCDIR) -c
@@ -20,10 +19,12 @@ RUNTESTS := $(patsubst %.c, %, $(shell find $(RUNDIR) -name "*.c"))
 # The subset of unit tests to be built- can be refined with TEST and TESTDIR
 DOTESTS := $(TESTS)
 ifdef TESTDIR
-DOTESTS := $(filter $(patsubst %.c, %, $(shell find . -wholename "*"/$(TESTDIR)"/unit/*.c")), $(DOTESTS))
+DOTESTS := $(filter $(patsubst %.c, %, $(shell find . -wholename \
+           "*"/$(TESTDIR)"/unit/*.c")), $(DOTESTS))
 endif
 ifdef TEST
-DOTESTS := $(filter $(patsubst %.c, %, $(shell find . -wholename "*/unit/"$(TEST)".c")), $(DOTESTS))
+DOTESTS := $(filter $(patsubst %.c, %, $(shell find . -wholename \
+           "*/unit/"$(TEST)".c")), $(DOTESTS))
 endif
 
 # All non-test C source files (extension modified)
@@ -37,9 +38,11 @@ COBJS := $(join $(dir $(CSRC)), $(addprefix object/, $(notdir $(CSRC))))
 SOBJS := $(join $(dir $(SSRC)), $(addprefix object/, $(notdir $(SSRC))))
 
 # All unit tests that have a corresponding C source
-CTEST := $(filter $(DOTESTS), $(patsubst %.o, %_test, $(join $(dir $(CSRC)), $(addprefix unit/, $(notdir $(CSRC))))))
+CTEST := $(filter $(DOTESTS), $(patsubst %.o, %_test, $(join $(dir $(CSRC)),\
+         $(addprefix unit/, $(notdir $(CSRC))))))
 # All unit tests that have a corresponding ASM source
-STEST := $(filter $(DOTESTS), $(patsubst %.o, %_test, $(join $(dir $(SSRC)), $(addprefix unit/, $(notdir $(SSRC))))))
+STEST := $(filter $(DOTESTS), $(patsubst %.o, %_test, $(join $(dir $(SSRC)),\
+         $(addprefix unit/, $(notdir $(SSRC))))))
 
 all: kernel.elf
 
@@ -66,7 +69,11 @@ os.iso: kernel.elf
 
 # Run the emulator on the produced disk image, with boshsrc.txt config file
 run: os.iso
-	bochs -f $(TOPDIR)/bochsrc.txt -q
+	echo "continue" | bochs -f $(TOPDIR)/bochsrc.txt -q || true
+
+# Run the emulator, but not skipping the debug prompt
+debug: os.iso
+	bochs -f $(TOPDIR)/bochsrc.txt -q || true
 
 # Compile all non-test C sources
 $(CSRC): %.o: %.c
@@ -104,4 +111,5 @@ test: $(CTEST) $(STEST)
 
 # Remove all object files, and the disk image
 clean:
-	@rm -rf $(shell find . -name "*.o") $(TOPDIR)/iso/boot/kernel.elf $(TOPDIR)/os.iso
+	@rm -rf $(shell find $(TOPDIR) -name "*.o") $(TOPDIR)/iso/boot/kernel.elf \
+    $(TOPDIR)/os.iso

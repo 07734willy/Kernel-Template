@@ -8,8 +8,14 @@ In order to run the unit tests on a 64-bit system, you'll need a cross compiler 
 
 To execute runtime tests, use the format
 
-	make run SOURCE=test_name.c
+	make run SOURCE=<test_name>
 
-Which will run the test associated with test_name.c.
+To execute unit tests, use the format
 
-On non-windows systems, you will need to type 'c' or "continue" to begin emulation in bochs.
+	make test [TEST=<test_name>] [TESTDIR=<test_directory>]
+
+You may also use
+
+	make debug
+
+to run the emulator without skipping the debug prompt (by default- "c" or "continue")
