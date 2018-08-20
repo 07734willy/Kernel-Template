@@ -1,6 +1,6 @@
 #include "framebuffer.h"
 
-void kmain()
+void runtime_test()
 {
     for (int j = 0; j < 25; j++)
         for (int i = 0; i < 80; i++) {
