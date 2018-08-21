@@ -11,8 +11,8 @@ global refresh_segs        ; make the label visible outside this file
 ;        ...  update as we add GDT entries
 
 refresh_segs:
-	mov eax, [esp + 4]
-	lgdt [eax]
+	;mov eax, [esp + 4]
+	;lgdt [eax]
 	jmp 0x8:.segFlush
 
 .segFlush:

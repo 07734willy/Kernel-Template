@@ -66,7 +66,7 @@ void fill_gdt_entry(struct gdt_entry* entry, uint32_t limit, uint32_t base, uint
 	entry->baseHigh = (base >> 24) & 0xFF;
 }
 
-void init_GDT(void) {
+uint32_t init_GDT(void) {
 	#ifdef DEFAULT
 	struct gdt_entry_access access = {0, 0, 0, 0, 1, 0, 0};
 	struct gdt_entry_flags flags = {0, 1, 1};
@@ -90,5 +90,6 @@ void init_GDT(void) {
 		"r" ((int)&gp));
 	*/
 	//refresh_segs();
-	refresh_segs((uint32_t)&gp);
+	return (uint32_t)&gp;
+	//refresh_segs((uint32_t)&gp);
 }
