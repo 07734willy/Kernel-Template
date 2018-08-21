@@ -1,6 +1,6 @@
 TOPDIR := .
 INCDIR := $(TOPDIR)/include
-RUNDIR := $(TOPDIR)/runtime
+RUNDIR := $(TOPDIR)/livetests
 CC = gcc
 # For use in compiling C source for the kernel.elf
 CFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
@@ -52,7 +52,7 @@ ifdef SOURCE
 RUNTEST := RUN_TEST
 kernel.elf: $(SOBJS) $(COBJS)
 	@echo $(RUNTESTS)
-	@$(CC) $(CFLAGS) runtime/$(SOURCE).c -o $(RUNDIR)/runtime_test.o
+	@$(CC) $(CFLAGS) $(RUNDIR)/$(SOURCE).c -o $(RUNDIR)/runtime_test.o
 	@ld $(LDFLAGS) -o $(TOPDIR)/iso/boot/kernel.elf $^ $(RUNDIR)/runtime_test.o
 	@rm $(RUNDIR)/runtime_test.o
 else
@@ -108,7 +108,8 @@ $(STEST): %: $(COBJS) $(SOBJS) %.C
 
 # Build all unit tests
 test: $(CTEST) $(STEST)
-
+	@echo $(CTEST)
+	@echo $(DOTESTS)
 # Remove all object files, and the disk image
 clean:
 	@rm -rf $(shell find $(TOPDIR) -name "*.o") $(TOPDIR)/iso/boot/kernel.elf \

@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unittest.h>
+
+static int tests_passed, tests_failed;
+static char* last_file = NULL;
+
+/** _ut_check_reset
+ * Resets the test counts for each new file
+ *
+ * @param file The file in which the current test is being executed from
+ */
+void _ut_check_reset(const char* file) {
+	if (!last_file || (strcmp(file, last_file) != 0)) {
+		tests_passed = tests_failed = 0;
+		free(last_file);
+		last_file = strdup(file);
+	}
+}
+
+/** _ut_fail
+ * Prints the failure status of the test and a description, and returns 0
+ *
+ * @param message The message to be printed (no newline)
+ * @param file The file that the test was executed from
+ * @param lineno The line number within the file which the test was executed
+ */
+int _ut_fail(const char* message, const char* file, int lineno) {
+	_ut_check_reset(file);
+	tests_failed++;
+	printf("[FAIL] %s:%d\n >>>>  %s\n", file, lineno, message);
+	return 0;
+}
+
+/** _ut_pass
+ * Prints the success status of the test, and returns 1
+ *
+ * @param file The file that the test was executed from
+ * @param lineno The line number within the file which the test was executed
+ */
+int _ut_pass(const char* file, int lineno) {
+	_ut_check_reset(file);
+	tests_passed++;
+	printf("[PASS] %s:%d\n", file, lineno);
+	return 1;
+}
+
+/** _ut_assert_equal
+ * Prints the status of the test, and returns said status
+ *
+ * @param message The message to be printed if the test failed (no newline)
+ * @param pass The status of the test
+ * @param file The file that the test was executed from
+ * @param lineno The line number within the file which the test was executed
+ */
+int _ut_assert_equal(const char* message, int pass, const char* file, int lineno) {
+	if (pass) {
+		_ut_fail(message, file, lineno);
+	} else {
+		_ut_pass(message, file, lineno);
+	}
+	return pass;
+}
+/** _ut_summary
+ * Prints a count of failed and passed tests
+ *
+ * @param file The file in which the tests were executed from
+ */
+void _ut_summary(const char* file) {
+	printf("===================================\n Summary for %s\n %d TOTAL, %d PASSED, and %d FAILED\n===================================\n", file, tests_passed + tests_failed, tests_passed, tests_failed);
+}
