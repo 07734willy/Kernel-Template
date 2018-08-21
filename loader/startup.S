@@ -22,19 +22,6 @@ section .text					; start of the text (code) section
 loader:						 
 	mov esp, kernel_stack + KERNEL_STACK_SIZE   ; point esp to the start of the
 												; stack (end of memory area)
-	
-	extern init_GDT
-	call init_GDT
-	lgdt [eax]
-	jmp 0x8:.segFlush
-	
-.segFlush:
-	mov ax, 0x10                ; load data segment offset into segment register
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	mov ss, ax
 
 	; Call the kernel main C function using cdecl
 	extern kmain
